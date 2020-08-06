@@ -1,0 +1,312 @@
+<clr-main-container>
+  <clr-header>
+    <div class="branding">
+      <a href="#" class="nav-link">
+        <span class="clr-icon clr-clarity-logo"
+          ><clr-icon shape="dashboard"></clr-icon
+        ></span>
+        <span class="title" *ngIf="width >= 768">Dashboard Monitoring VO</span>
+      </a>
+    </div>
+    <!-- <div class="header-nav" [clr-nav-level]="1">
+      <a
+        class="nav-link"
+        href="#"
+        [routerLink]="['/home']"
+        routerLinkActive="active"
+        ><span class="nav-text">Home</span></a
+      >
+      <a
+        class="nav-link"
+        href="#"
+        [routerLink]="['/about']"
+        routerLinkActive="active"
+        ><span class="nav-text">About</span></a
+      >
+    </div> -->
+    <div class="header-actions">
+      <!-- <a href="javascript://" class="nav-link nav-icon" aria-label="settings"> -->
+      <img
+        style="max-width: 70%; max-height: 70%; margin-top: 8px;"
+        src="../monitoring-vo/assets/images/logo-acset.png"
+      />
+      <!-- </a> -->
+    </div>
+  </clr-header>
+  <div class="content-container">
+    <div class="content-area">
+      <div class="card">
+        <div class="card-block">
+          <div class="card-text">
+            <div class="clr-row" style="text-align: center;">
+              <div
+                class="clr-col-12 clr-col-sm-12 clr-col-md-4 clr-col-lg-4 clr-col-xl-4"
+              >
+                <h1>{{ params.project_code }}</h1>
+              </div>
+              <div
+                class="clr-col-12 clr-col-sm-12 clr-col-md-4 clr-col-lg-4 clr-col-xl-4"
+              >
+                <clr-select-container>
+                  <label>Select Project</label>
+                  <select
+                    clrSelect
+                    name="options"
+                    [(ngModel)]="params.project_code"
+                    (change)="onChangeProject()"
+                  >
+                    <option
+                      *ngFor="let project of listProjects"
+                      [value]="project.project_code"
+                      >{{ project.project_name }}</option
+                    >
+                  </select>
+                </clr-select-container>
+              </div>
+              <div
+                class="clr-col-12 clr-col-sm-12 clr-col-md-4 clr-col-lg-4 clr-col-xl-4"
+              >
+                <h1>{{ dateNow | date: "dd MMM yyyy" }}</h1>
+              </div>
+            </div>
+            <div class="clr-row" style="text-align: center;">
+              <div
+                class="clr-col-12 clr-col-sm-12 clr-col-md-8 clr-col-lg-8 clr-col-xl-8"
+              >
+                <div class="clr-row" style="text-align: center;">
+                  <div
+                    class="clr-col-12 clr-col-sm-12 clr-col-md-6 clr-col-lg-6 clr-col-xl-6"
+                  >
+                    <div class="card" *ngIf="flag">
+                      <div class="card-header">
+                        Main Contract
+                      </div>
+                      <div class="card-block">
+                        <div class="card-text">
+                          <app-dougnut [data]="data"></app-dougnut>
+                          <h4>
+                            Payment :
+                          </h4>
+                          <h4>
+                            {{ dataChart.bill_main_contract | currency: "Rp " }}
+                          </h4>
+                          <h4>
+                            Total Amount :
+                          </h4>
+                          <h4>
+                            {{
+                              dataChart.amount_main_contract | currency: "Rp "
+                            }}
+                          </h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="clr-col-12 clr-col-sm-12 clr-col-md-6 clr-col-lg-6 clr-col-xl-6"
+                  >
+                    <div class="card" *ngIf="flag">
+                      <div class="card-header">
+                        Total Contract
+                      </div>
+                      <div class="card-block">
+                        <div class="card-text">
+                          <app-dougnut [data]="data3"></app-dougnut>
+                          <h4>
+                            Payment :
+                          </h4>
+                          <h4>
+                            {{ dataChart2.total_billing | currency: "Rp " }}
+                          </h4>
+                          <h4>
+                            Total Amount :
+                          </h4>
+                          <h4>
+                            {{ dataChart2.total_contract | currency: "Rp " }}
+                          </h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="clr-col-12 clr-col-sm-12 clr-col-md-6 clr-col-lg-6 clr-col-xl-6"
+                  >
+                    <div class="card" *ngIf="flag">
+                      <div class="card-header">
+                        Total VO
+                      </div>
+                      <div class="card-block">
+                        <div class="card-text">
+                          <app-dougnut [data]="data2"></app-dougnut>
+                          <h4>
+                            Payment :
+                          </h4>
+                          <h4>{{ dataChart.bill_vo | currency: "Rp " }}</h4>
+                          <h4>
+                            Total Amount :
+                          </h4>
+                          <h4>
+                            {{ dataChart.amount_contract_vo | currency: "Rp " }}
+                          </h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="clr-col-12 clr-col-sm-12 clr-col-md-6 clr-col-lg-6 clr-col-xl-6"
+                  >
+                    <div class="card">
+                      <div class="card-header">
+                        Potential VO
+                      </div>
+                      <div class="card-block">
+                        <div class="card-text">
+                          <h1 *ngIf="flag">
+                            {{ dataChart2.potential_vo | currency: "Rp " }}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="clr-col-12 clr-col-sm-12 clr-col-md-4 clr-col-lg-4 clr-col-xl-4"
+              >
+                <div class="card">
+                  <div class="card-header">
+                    Contract Detail
+                  </div>
+                  <div class="card-block">
+                    <div class="card-text">
+                      <clr-datagrid>
+                        <clr-dg-column>
+                          <ng-container
+                            *clrDgHideableColumn="{ hidden: false }"
+                          >
+                            NO.
+                          </ng-container></clr-dg-column
+                        >
+                        <clr-dg-column>
+                          <ng-container
+                            *clrDgHideableColumn="{ hidden: false }"
+                          >
+                            TYPE
+                          </ng-container></clr-dg-column
+                        >
+                        <clr-dg-column>
+                          <ng-container
+                            *clrDgHideableColumn="{ hidden: false }"
+                          >
+                            VALUE
+                          </ng-container></clr-dg-column
+                        >
+                        <clr-dg-column>
+                          <ng-container
+                            *clrDgHideableColumn="{ hidden: false }"
+                          >
+                            PAYMENT
+                          </ng-container></clr-dg-column
+                        >
+
+                        <clr-dg-row
+                          *clrDgItems="let data of dataDetail; index as i"
+                          [clrDgItem]="data"
+                        >
+                          <clr-dg-cell>{{ data.so_number }}</clr-dg-cell>
+                          <clr-dg-cell>{{ data.contract_type }}</clr-dg-cell>
+                          <clr-dg-cell style="text-align: right;">{{
+                            data.amount | number
+                          }}</clr-dg-cell>
+                          <clr-dg-cell
+                            style="color: #203071; text-align: right;"
+                            [class.bg-red]="
+                              data.payment == 0 && data.contract_type != 'VO-'
+                            "
+                            [class.bg-yellow]="
+                              data.payment >= 0 &&
+                              data.payment < data.amount &&
+                              data.contract_type != 'VO-'
+                            "
+                            [class.bg-green]="
+                              data.payment != 0 &&
+                              data.payment >= data.amount &&
+                              data.contract_type != 'VO-'
+                            "
+                          >
+                            {{ data.payment | number }}</clr-dg-cell
+                          >
+                        </clr-dg-row>
+
+                        <clr-dg-footer>
+                          <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                            <clr-dg-page-size
+                              [clrPageSizeOptions]="[10, 20, 50, 100]"
+                              >Data per page</clr-dg-page-size
+                            >
+                            {{ pagination.firstItem + 1 }} -
+                            {{ pagination.lastItem + 1 }} of
+                            {{ pagination.totalItems }} data
+                          </clr-dg-pagination>
+                        </clr-dg-footer>
+                      </clr-datagrid>
+
+                      <table style="width: 100%; margin-top: 10px;">
+                        <tr>
+                          <td>
+                            <span
+                              style="
+                                background-color: #f00;
+                                border-radius: 15px;
+                                padding-left: 15px;
+                                padding-right: 15px;
+                              "
+                              >&nbsp;</span
+                            >
+                            0%
+                          </td>
+                          <td>
+                            <span
+                              style="
+                                background-color: #ff0;
+                                border-radius: 15px;
+                                padding-left: 15px;
+                                padding-right: 15px;
+                              "
+                              >&nbsp;</span
+                            >
+                            1% - 99%
+                          </td>
+                          <td>
+                            <span
+                              style="
+                                background-color: #0f0;
+                                border-radius: 15px;
+                                padding-left: 15px;
+                                padding-right: 15px;
+                              "
+                              >&nbsp;</span
+                            >
+                            >= 100%
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</clr-main-container>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-atom"
+  [fullScreen]="true"
+  ><p style="color: white;">Loading...</p></ngx-spinner
+>
